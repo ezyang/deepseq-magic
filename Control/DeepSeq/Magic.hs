@@ -31,12 +31,16 @@ rnf :: a -> ()
 rnf a = a `seq` rest `seq` () where
     rest = case unpackClosure# a of
             (# _, ptrs#, _ #)->
-                let s# = sizeofArray# ptrs#
-                    go n# | n# ==# s# = ()
-                          | otherwise =
-                              case indexArray# ptrs# n# of
-                                (# a #) -> rnf a `seq` go (n# +# 1#)
-                in go 0#
+                let s = I# (sizeofArray# ptrs#)
+                    -- Despite the mucking about with unboxed integers,
+                    -- use normal equality because the API changed
+                    -- backwards incompatibly in 7.10.  The optimizer
+                    -- can figure out how to get the unboxed version.
+                    go n@(I# n#) | n == s = ()
+                                 | otherwise =
+                                    case indexArray# ptrs# n# of
+                                      (# a #) -> rnf a `seq` go (n + 1)
+                in go 0
 
 infixr 0 $!!
 
