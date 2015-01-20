@@ -1,7 +1,7 @@
 name:                deepseq-magic
-version:             1.0.0.0
+version:             1.0.0.1
 synopsis:            Deep evaluation of data structures without NFData
--- description:         
+description:         Deep evaluation of data structures without NFData
 license:             PublicDomain
 author:              Edward Z. Yang
 maintainer:          ezyang@cs.stanford.edu

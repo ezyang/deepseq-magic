@@ -35,7 +35,7 @@ rnf a = a `seq` rest `seq` () where
                     go n# | n# ==# s# = ()
                           | otherwise =
                               case indexArray# ptrs# n# of
-                                (# a #) -> a `seq` go (n# +# 1#)
+                                (# a #) -> rnf a `seq` go (n# +# 1#)
                 in go 0#
 
 infixr 0 $!!
